@@ -33,7 +33,7 @@ public class FieldResolver implements Resolver {
                 Named annotation = field.getAnnotation(Named.class);
                 if (annotation != null) {
                     resolveNamed(container, object, field, container.resolveByName(annotation.value()));
-                    return object;
+                    continue;
                 }
 
                 Annotation qualifier = Arrays
@@ -42,11 +42,10 @@ public class FieldResolver implements Resolver {
                         .findFirst().orElseGet(() -> null);
                 if (qualifier != null) {
                     resolveQualifier(container, object, field, qualifier);
-                    return object;
+                    continue;
                 }
 
                 field.set(object, container.getResource(field.getType()));
-                return object;
             }
         }
         return object;
